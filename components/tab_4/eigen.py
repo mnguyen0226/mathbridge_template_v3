@@ -1,23 +1,21 @@
+# dash imports
 from dash import dcc
 from dash import html
-import plotly.express as px
-import numpy as np
-import math
-from maindash import my_app
-from dash.dependencies import Input, Output
-import math, json
+from dash import Input
+from dash import Output
 
+# other imports
+import numpy as np
 import plotly.graph_objects as go
-import numpy as np
-from plotly.subplots import make_subplots
+
+# file imports
+from maindash import my_app
+from utils.others.file_operations import read_file_as_str
 
 
-def readFileasStr(filename):
-    with open(filename, "r") as file:
-        data = file.read()
-    return data
-
-
+#######################################
+# Dash Layout
+#######################################
 def eigen_layout():
     tab5Layout = html.Div(
         [
@@ -121,6 +119,9 @@ def eigen_layout():
 selected_points = []
 
 
+#######################################
+# Dash Callbacks
+#######################################
 @my_app.callback(
     Output(component_id="eigen-val-output1", component_property="children"),
     Output(component_id="eigen-val-output2", component_property="children"),
@@ -350,6 +351,8 @@ def record_coords(A, B, C, D):
     )
 
     # add mark down
-    code_eigen_markdown = readFileasStr("./utils/markdown/tab_4/code_markdown_eigen.md")
+    code_eigen_markdown = read_file_as_str(
+        "./utils/markdown/tab_4/code_markdown_eigen.md"
+    )
 
     return cal_eigen_val1, cal_eigen_val2, fig1, fig2, fig3, code_eigen_markdown
