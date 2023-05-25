@@ -1,5 +1,4 @@
 # dash imports
-import dash
 from dash import html
 from dash import Input
 from dash import Output
@@ -35,20 +34,19 @@ my_app.layout = html.Div(
                 dcc.Tab(label="Functions Plotted", value="func_tab"),
                 dcc.Tab(label="Eigen", value="eigen_tab"),
             ],
-            value="rand_exp_tab", # default page
+            value="rand_exp_tab",  # default page
         ),
         html.Div(id="layout"),
     ],
     className="outer-div",
 )
 
+
 #######################################
 # Dash Callbacks
 #######################################
 @my_app.callback(
-    Output(
-        component_id="layout", component_property="children"
-    ), 
+    Output(component_id="layout", component_property="children"),
     Input(component_id="tab_bar", component_property="value"),
 )
 def render_main_page(tab_choice):
