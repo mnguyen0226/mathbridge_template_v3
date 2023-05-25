@@ -161,7 +161,7 @@ def tab1_sel2_layout():
         [
             dcc.Markdown(
                 id="code_block_md",
-                children=readFileasStr("./markdown/code-markdown-rand.md"),
+                children=readFileasStr("./utils/markdown/tab_1/code_markdown_rand.md"),
                 className="code-markdown-view",
                 mathjax=True,
             ),
@@ -229,7 +229,7 @@ def randomExpressionsGen(n_samples, bins, r_seed, m, a, q, r, scaledown):
     axis_dict = dict(mirror=True, ticks="outside", showline=True, title="")
     randGen = RandTool(m, a, q, r, r_seed)
     a, b, c = randGen.getUniformUVW(n_samples, scaledown)
-    lehmanmd = readFileasStr("utils/markdown/lehman.md")
+    lehmanmd = readFileasStr("utils/markdown/tab_1/lehman.md")
     U = px.histogram(a, nbins=bins, template="simple_white")
     V = px.histogram(b, nbins=bins, template="simple_white")
     W = px.histogram(c, nbins=bins, template="simple_white")
@@ -246,4 +246,4 @@ def randomExpressionsGen(n_samples, bins, r_seed, m, a, q, r, scaledown):
     prevent_initial_call=True,
 )
 def func(n_clicks):
-    return dcc.send_file("./py-assets/random-gen.py")
+    return dcc.send_file("./utils/download_codes/tab_1/random_gen.py")
