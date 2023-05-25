@@ -6,12 +6,7 @@ from dash import Output
 from dash import dcc
 
 # other imports
-import numpy as np
 import plotly.io as pio
-import plotly.express as px
-import pandas as pd
-import math
-import json
 
 # file imports
 from maindash import my_app
@@ -31,22 +26,21 @@ server = my_app.server
 #######################################
 my_app.layout = html.Div(
     [
-        html.H2("Mathbridge Course"),
+        html.H2("Mathbridge @ Virginia Tech"),
         dcc.Tabs(
-            id="viz_tabs",
+            id="tab_bar",
             children=[
-                dcc.Tab(label="Random Expressions", value="rand_exp"),
-                dcc.Tab(label="Distributions", value="dist"),
-                dcc.Tab(label="Functions Plotted", value="functions"),
-                dcc.Tab(label="Eigen Vector & Eigen Values", value="eigen"),
+                dcc.Tab(label="Random Expressions", value="rand_exp_tab"),
+                dcc.Tab(label="Distributions", value="dist_tab"),
+                dcc.Tab(label="Functions Plotted", value="func_tab"),
+                dcc.Tab(label="Eigen", value="eigen_tab"),
             ],
-            value="main_tab",
+            value="rand_exp_tab", # default page
         ),
         html.Div(id="layout"),
     ],
     className="outer-div",
-)  # NOTE: className is for styling
-
+)
 
 #######################################
 # Dash Callbacks
@@ -54,18 +48,26 @@ my_app.layout = html.Div(
 @my_app.callback(
     Output(
         component_id="layout", component_property="children"
-    ),  # children and value are HTML property (W3 school)
-    Input(component_id="viz_tabs", component_property="value"),
+    ), 
+    Input(component_id="tab_bar", component_property="value"),
 )
-def rendertheRightTabs(ques):
-    if ques == "rand_exp":
-        return random_exp.randomExpressionLayout()
-    if ques == "dist":
-        return dist.tab3Layout()
-    if ques == "functions":
-        return func.functionsLayout()
-    if ques == "eigen":
-        return eigen.tab5Layout()
+def render_main_page(tab_choice):
+    """Renders the selected tab
+
+    Args:
+        tab_choice (str): dash Tab component's value
+
+    Returns:
+        _type_: selected tab
+    """
+    if tab_choice == "rand_exp_tab":
+        return random_exp.rand_exp_layout()
+    if tab_choice == "dist_tab":
+        return dist.dist_layout()
+    if tab_choice == "func_tab":
+        return func.func_layout()
+    if tab_choice == "eigen_tab":
+        return eigen.eigen_layout()
 
 
 if __name__ == "__main__":

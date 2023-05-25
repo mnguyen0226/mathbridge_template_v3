@@ -13,7 +13,7 @@ def readFileasStr(filename):
     return data
 
 
-def tab3Layout():
+def dist_layout():
     tab3Layout = html.Div(
         [
             dcc.Tabs(

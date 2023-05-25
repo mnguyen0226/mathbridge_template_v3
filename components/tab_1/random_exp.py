@@ -174,7 +174,7 @@ def tab1_sel2_layout():
     return tab1_sel2_layout
 
 
-def randomExpressionLayout():
+def rand_exp_layout():
     tab1Layout = html.Div(
         [
             dcc.Tabs(

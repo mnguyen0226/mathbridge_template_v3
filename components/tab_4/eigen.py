@@ -18,7 +18,7 @@ def readFileasStr(filename):
     return data
 
 
-def tab5Layout():
+def eigen_layout():
     tab5Layout = html.Div(
         [
             html.H3("Visualizing Eigen Vector & Eigen Values"),
