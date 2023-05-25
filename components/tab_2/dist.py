@@ -292,7 +292,7 @@ def uniformDistLayout():
                         [
                             html.Br(),
                             html.Strong(
-                                "Histogram of the value-spread of the binomial distribution"
+                                "Histogram of the value-spread of the uniform distribution"
                             ),
                             dcc.Graph(id="uni-dist"),
                         ],
