@@ -15,17 +15,13 @@ import json
 
 # file imports
 from maindash import my_app
+from components.tab_1 import random_exp
 
 #######################################
 # Initial Settings
 #######################################
 pio.templates
 server = my_app.server
-external_stylesheets = [
-    "https://codepen.io/chriddyp/pen/bWLwgP.css",
-    "src/assets/assets.css",
-]
-
 
 #######################################
 # Dash Layout
@@ -37,7 +33,6 @@ my_app.layout = html.Div(
             id="viz_tabs",
             children=[
                 dcc.Tab(label="Random Expressions", value="rand_exp"),
-                dcc.Tab(label="Neural Networks", value="nn"),
                 dcc.Tab(label="Distributions", value="dist"),
                 dcc.Tab(label="Functions Plotted", value="functions"),
                 dcc.Tab(label="Eigen Vector & Eigen Values", value="eigen"),
@@ -61,10 +56,7 @@ my_app.layout = html.Div(
 )
 def rendertheRightTabs(ques):
     if ques == "rand_exp":
-        pass
-    if ques == "nn":
-        pass
-        #  return tab2.tab2Layout()
+        return random_exp.randomExpressionLayout()
     if ques == "dist":
         pass
         #  return tab3.tab3Layout()
