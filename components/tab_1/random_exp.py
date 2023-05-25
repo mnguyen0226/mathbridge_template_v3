@@ -1,30 +1,84 @@
+# dash imports
 from dash import dcc
 from dash import html
-import numpy as np
-from maindash import my_app
-from dash.dependencies import Input, Output
-from utils.stats.random_tool import RandTool
+from dash import Input
+from dash import Output
 
+# other imports
+import numpy as np
 import plotly.express as px
 
+# file imports
+from maindash import my_app
+from utils.stats.random_tool import RandTool
+from utils.others.file_operations import read_file_as_str
 
-def readFileasStr(filename):
-    with open(filename, "r") as file:
-        data = file.read()
-    return data
+
+#######################################
+# Dash Layout
+#######################################
+def rand_exp_layout():
+    """Renders the layout of tab 1
+
+    Returns:
+        selected subtab's layout
+    """
+    tab_1_layout = html.Div(
+        [
+            dcc.Tabs(
+                id="selected_tab",
+                children=[
+                    dcc.Tab(label="Playground", value="pg_tab"),
+                    dcc.Tab(label="Code Blocks", value="code_tab"),
+                ],
+                value="pg_tab",
+            ),
+            html.Div(id="tab_layout"),
+        ]
+    )
+    return tab_1_layout
 
 
-def tab1Sel1Layout():
-    tab1_sel1_layout = html.Div(
+#######################################
+# Dash Callbacks
+#######################################
+@my_app.callback(
+    Output(component_id="tab_layout", component_property="children"),
+    Input(component_id="selected_tab", component_property="value"),
+)
+def render_tab_1(tab_choice):
+    """Renders the selected subtab's layout
+
+    Args:
+        tab_choice (str): selected subtab
+
+    Returns:
+        selected subtab's layout
+    """
+    if tab_choice == "pg_tab":
+        return playground_tab_layout()
+    if tab_choice == "code_tab":
+        return codeblock_tab_layout()
+
+
+#######################################
+# Playground Layout
+#######################################
+def playground_tab_layout():
+    """Renders the layout of playground tab
+
+    Returns:
+        selected subtab's layout
+    """
+    subtab_layout = html.Div(
         [
             html.H3("Visualizing Random Expressions"),
-            html.Strong("Basic Lehmer generator:"),
+            html.Strong("Basic Lehman Generator:"),
             html.Br(),
             dcc.Markdown(id="lehman_md", className="markdown-view", mathjax=True),
-            html.Strong(id="Number of Samples:"),
             html.Div(
                 [
-                    html.H4("R_seed"),
+                    html.H4("Random Seed"),
                     dcc.Input(
                         id="r_seed",
                         type="number",
@@ -88,11 +142,9 @@ def tab1Sel1Layout():
                                 marks={data: str(data) for data in range(0, 1000, 50)},
                                 step=100,
                             ),
-                            # dcc.Input(id='n_samples', type="number", value=10),
                             html.H4("No of bins to generate:"),
-                            # dcc.Input(id='bins-desired', type="number", value=10),
                             dcc.Slider(
-                                id="bins-desired",
+                                id="bins_desired",
                                 min=2,
                                 max=100,
                                 value=2,
@@ -101,7 +153,6 @@ def tab1Sel1Layout():
                             ),
                             html.Br(),
                             html.H4("Choose an appropriate alpha for W:"),
-                            # dcc.Input(id='bins-desired', type="number", value=10),
                             dcc.Slider(
                                 id="alpha",
                                 min=0.01,
@@ -121,7 +172,7 @@ def tab1Sel1Layout():
                             html.Strong(
                                 "Histogram of the value-spread of the uniform distribution"
                             ),
-                            dcc.Graph(id="uniform-graph"),
+                            dcc.Graph(id="uniform_graph"),
                         ],
                         className="grouped-graphs",
                     ),
@@ -135,7 +186,7 @@ def tab1Sel1Layout():
                             html.Strong(
                                 "Histogram of the value-spread of the V distribution"
                             ),
-                            dcc.Graph(id="v-graph"),
+                            dcc.Graph(id="v_graph"),
                         ],
                         className="grouped-graphs",
                     ),
@@ -144,7 +195,7 @@ def tab1Sel1Layout():
                             html.Strong(
                                 "Histogram of the value-spread of the W distribution"
                             ),
-                            dcc.Graph(id="w-graph"),
+                            dcc.Graph(id="w_graph"),
                         ],
                         className="grouped-graphs",
                     ),
@@ -153,70 +204,19 @@ def tab1Sel1Layout():
             ),
         ]
     )
-    return tab1_sel1_layout
+    return subtab_layout
 
 
-def tab1_sel2_layout():
-    tab1_sel2_layout = html.Div(
-        [
-            dcc.Markdown(
-                id="code_block_md",
-                children=readFileasStr("./utils/markdown/tab_1/code_markdown_rand.md"),
-                className="code-markdown-view",
-                mathjax=True,
-            ),
-            html.Button(
-                "Download Code", id="btn-download-rand", className="btn-download"
-            ),
-            dcc.Download(id="download-py"),
-        ]
-    )
-    return tab1_sel2_layout
-
-
-def rand_exp_layout():
-    tab1Layout = html.Div(
-        [
-            dcc.Tabs(
-                id="viz_random",
-                children=[
-                    dcc.Tab(label="Playground", value="pg_rnd"),
-                    dcc.Tab(label="Code Blocks", value="pg_code"),
-                ],
-                value="pg_rnd",
-            ),
-            html.Div(id="layout_tab1"),
-        ]
-    )
-    return tab1Layout
-
-
-############################################
+#######################################
+# Playground Callbacks
+#######################################
 @my_app.callback(
-    Output(component_id="layout_tab1", component_property="children"),
-    Input(component_id="viz_random", component_property="value"),
-)
-def Tab1Render(ques):
-    if ques == "pg_rnd":
-        return tab1Sel1Layout()
-        # tab1_sel1_layout
-
-    if ques == "pg_code":
-        return tab1_sel2_layout()
-
-    return "The impaler!!!!"
-
-
-############################################ DONT WORRY ABOUT THIS CODE
-
-
-@my_app.callback(
-    Output(component_id="uniform-graph", component_property="figure"),
-    Output(component_id="v-graph", component_property="figure"),
-    Output(component_id="w-graph", component_property="figure"),
+    Output(component_id="uniform_graph", component_property="figure"),
+    Output(component_id="v_graph", component_property="figure"),
+    Output(component_id="w_graph", component_property="figure"),
     Output(component_id="lehman_md", component_property="children"),
     Input(component_id="n_samples", component_property="value"),
-    Input(component_id="bins-desired", component_property="value"),
+    Input(component_id="bins_desired", component_property="value"),
     Input(component_id="r_seed", component_property="value"),
     Input(component_id="m", component_property="value"),
     Input(component_id="a", component_property="value"),
@@ -224,12 +224,11 @@ def Tab1Render(ques):
     Input(component_id="r", component_property="value"),
     Input(component_id="alpha", component_property="value"),
 )
-def randomExpressionsGen(n_samples, bins, r_seed, m, a, q, r, scaledown):
-    # a=10 * np.random.randn(1, 10)
+def render_playground_tab(n_samples, bins, r_seed, m, a, q, r, scaledown):
     axis_dict = dict(mirror=True, ticks="outside", showline=True, title="")
     randGen = RandTool(m, a, q, r, r_seed)
     a, b, c = randGen.getUniformUVW(n_samples, scaledown)
-    lehmanmd = readFileasStr("utils/markdown/tab_1/lehman.md")
+    lehman_text = read_file_as_str("utils/markdown/tab_1/lehman.md")
     U = px.histogram(a, nbins=bins, template="simple_white")
     V = px.histogram(b, nbins=bins, template="simple_white")
     W = px.histogram(c, nbins=bins, template="simple_white")
@@ -237,12 +236,43 @@ def randomExpressionsGen(n_samples, bins, r_seed, m, a, q, r, scaledown):
     U.update_layout(xaxis=axis_dict, yaxis=axis_dict, showlegend=False)
     V.update_layout(xaxis=axis_dict, yaxis=axis_dict, showlegend=False)
     W.update_layout(xaxis=axis_dict, yaxis=axis_dict, showlegend=False)
-    return U, V, W, lehmanmd
+    return U, V, W, lehman_text
 
 
+#######################################
+# Codeblock Layout
+#######################################
+def codeblock_tab_layout():
+    """Renders the layout of codeblock tab
+
+    Returns:
+        selected subtab's layout
+    """
+    subtab_layout = html.Div(
+        [
+            dcc.Markdown(
+                id="code_block_md",
+                children=read_file_as_str(
+                    "./utils/markdown/tab_1/code_markdown_rand.md"
+                ),
+                className="code-markdown-view",
+                mathjax=True,
+            ),
+            html.Button(
+                "Download Code", id="btn_download_rand", className="btn-download"
+            ),
+            dcc.Download(id="download_py"),
+        ]
+    )
+    return subtab_layout
+
+
+#######################################
+# Codeblock Callbacks
+#######################################
 @my_app.callback(
-    Output("download-py", "data"),
-    Input("btn-download-rand", "n_clicks"),
+    Output(component_id="download_py", component_property="data"),
+    Input(component_id="btn_download_rand", component_property="n_clicks"),
     prevent_initial_call=True,
 )
 def func(n_clicks):
