@@ -4,7 +4,7 @@ import numpy as np
 from maindash import my_app
 from dash.dependencies import Input, Output
 import plotly.express as px
-from utils.ml.tab_3 import coor_gen
+from utils.ml import coor_gen
 
 
 def readFileasStr(filename):
