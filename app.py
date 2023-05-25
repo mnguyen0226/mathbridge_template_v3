@@ -18,6 +18,7 @@ from maindash import my_app
 from components.tab_1 import random_exp
 from components.tab_2 import dist
 from components.tab_3 import func
+from components.tab_4 import eigen
 
 #######################################
 # Initial Settings
@@ -62,11 +63,9 @@ def rendertheRightTabs(ques):
     if ques == "dist":
         return dist.tab3Layout()
     if ques == "functions":
-        pass
         return func.functionsLayout()
     if ques == "eigen":
-        pass
-        #  return tab5.tab5Layout()
+        return eigen.tab5Layout()
 
 
 if __name__ == "__main__":
