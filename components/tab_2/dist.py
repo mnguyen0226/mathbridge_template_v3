@@ -1,19 +1,28 @@
+# dash imports
 from dash import dcc
 from dash import html
+from dash import Input
+from dash import Output
+
+# other imports
 import plotly.express as px
 import numpy as np
-import math
-from dash.dependencies import Input, Output
+
+
+# file imports
 from maindash import my_app
+from utils.others.file_operations import read_file_as_str
 
 
-def readFileasStr(filename):
-    with open(filename, "r") as file:
-        data = file.read()
-    return data
-
-
+#######################################
+# Dash Layout
+#######################################
 def dist_layout():
+    """Renders the layout of tab 3
+
+    Returns:
+        selected subtab's layout
+    """
     tab3Layout = html.Div(
         [
             dcc.Tabs(
@@ -32,6 +41,35 @@ def dist_layout():
     return tab3Layout
 
 
+#######################################
+# Dash Callbacks
+#######################################
+@my_app.callback(
+    Output(component_id="layout_tab3", component_property="children"),
+    Input(component_id="viz_dists", component_property="value"),
+)
+def render_tab_2(tab_choice):
+    """Renders the selected subtab's layout
+
+    Args:
+        tab_choice (str): selected subtab
+
+    Returns:
+        selected subtab's layout
+    """
+    if tab_choice == "normdist":
+        return normDistLayout()
+    if tab_choice == "poissondist":
+        return poissonDistLayout()
+    if tab_choice == "binomdist":
+        return binomialDistLayout()
+    if tab_choice == "uniformdist":
+        return uniformDistLayout()
+
+
+#######################################
+# Normal Distribution Layout
+#######################################
 def normDistLayout():
     distributionLayout = html.Div(
         [
@@ -60,7 +98,6 @@ def normDistLayout():
                             ),
                             html.Br(),
                             html.H4("Choose an appropriate Mean:"),
-                            # dcc.Input(id='bins-desired', type="number", value=10),
                             dcc.Slider(
                                 id="mean_norm",
                                 min=-10,
@@ -71,7 +108,6 @@ def normDistLayout():
                             ),
                             html.Br(),
                             html.H4("Choose an appropriate Standard Deviation:"),
-                            # dcc.Input(id='bins-desired', type="number", value=10),
                             dcc.Slider(
                                 id="sd_norm",
                                 min=0,
@@ -98,7 +134,9 @@ def normDistLayout():
             ),
             dcc.Markdown(
                 id="norm_block_md",
-                children=readFileasStr("./utils/markdown/tab_2/code_markdown_norm.md"),
+                children=read_file_as_str(
+                    "./utils/markdown/tab_2/code_markdown_norm.md"
+                ),
                 className="code-markdown-view",
                 mathjax=True,
             ),
@@ -112,6 +150,9 @@ def normDistLayout():
     return distributionLayout
 
 
+#######################################
+# Normal Distribution Callbacks
+#######################################
 @my_app.callback(
     Output(component_id="normal-dist", component_property="figure"),
     Input(component_id="n_samples_norm", component_property="value"),
@@ -136,7 +177,9 @@ def func(n_clicks):
     return dcc.send_file("./utils/download_codes/tab_2/normal_gen.py")
 
 
-#############################
+#######################################
+# Poisson Distribution Layout
+#######################################
 def poissonDistLayout():
     distributionLayout = html.Div(
         [
@@ -165,7 +208,6 @@ def poissonDistLayout():
                             ),
                             html.Br(),
                             html.H4("Choose an appropriate Lambda (Rate of Events):"),
-                            # dcc.Input(id='bins-desired', type="number", value=10),
                             dcc.Slider(
                                 id="lambda",
                                 min=0,
@@ -174,11 +216,6 @@ def poissonDistLayout():
                                 marks={data: str(data) for data in range(0, 50, 5)},
                                 step=1,
                             ),
-                            # html.Br(),
-                            # html.H4("Choose an appropriate Standard Deviation:"),
-                            # # dcc.Input(id='bins-desired', type="number", value=10),
-                            # dcc.Slider(id='sd_norm', min=0, max=10, value=0.1,
-                            #            marks={data: str(data) for data in range(0, 10, 1)}, step=0.1),
                         ],
                         className="grouped-sliders",
                     ),
@@ -197,7 +234,7 @@ def poissonDistLayout():
             ),
             dcc.Markdown(
                 id="poisson_block_md",
-                children=readFileasStr(
+                children=read_file_as_str(
                     "./utils/markdown/tab_2/code_markdown_poisson.md"
                 ),
                 className="code-markdown-view",
@@ -213,6 +250,9 @@ def poissonDistLayout():
     return distributionLayout
 
 
+#######################################
+# Poisson Distribution Callbacks
+#######################################
 @my_app.callback(
     Output(component_id="poisson-dist", component_property="figure"),
     Input(component_id="n_samples_poisson", component_property="value"),
@@ -236,7 +276,9 @@ def func(n_clicks):
     return dcc.send_file("./utils/download_codes/tab_2/poisson_gen.py")
 
 
-#############################
+#######################################
+# Uniform Distribution Layout
+#######################################
 def uniformDistLayout():
     distributionLayout = html.Div(
         [
@@ -265,7 +307,6 @@ def uniformDistLayout():
                             ),
                             html.Br(),
                             html.H4("Choose an appropriate low value:"),
-                            # dcc.Input(id='bins-desired', type="number", value=10),
                             dcc.Slider(
                                 id="un_low",
                                 min=0,
@@ -276,7 +317,6 @@ def uniformDistLayout():
                             ),
                             html.Br(),
                             html.H4("Choose an appropriate high value:"),
-                            # dcc.Input(id='bins-desired', type="number", value=10),
                             dcc.Slider(
                                 id="un_high",
                                 min=0,
@@ -303,7 +343,7 @@ def uniformDistLayout():
             ),
             dcc.Markdown(
                 id="uni_block_md",
-                children=readFileasStr(
+                children=read_file_as_str(
                     "./utils/markdown/tab_2/code_markdown_uniform.md"
                 ),
                 className="code-markdown-view",
@@ -319,6 +359,9 @@ def uniformDistLayout():
     return distributionLayout
 
 
+#######################################
+# Uniform Distribution Callbacks
+#######################################
 @my_app.callback(
     Output(component_id="uni-dist", component_property="figure"),
     Output(component_id="un_high", component_property="min"),
@@ -345,7 +388,9 @@ def func(n_clicks):
     return dcc.send_file("./utils/download_codes/tab_2/uniform_gen.py")
 
 
-#############################
+#######################################
+# Binomial Distribution Layout
+#######################################
 def binomialDistLayout():
     distributionLayout = html.Div(
         [
@@ -363,14 +408,9 @@ def binomialDistLayout():
                                 marks={data: str(data) for data in range(0, 1000, 50)},
                                 step=100,
                             ),
-                            # html.H4("No of bins to generate:"),
-                            # dcc.Slider(id='bins_desired_binom', min=2, max=100, value=2,
-                            #            marks={data: str(data) for data in range(0, 100, 10)}, step=10),
-                            # html.Br(),
                             html.H4(
                                 "Choose an appropriate Number of events in each trial(n):"
                             ),
-                            # dcc.Input(id='bins-desired', type="number", value=10),
                             dcc.Slider(
                                 id="trials",
                                 min=0,
@@ -381,7 +421,6 @@ def binomialDistLayout():
                             ),
                             html.Br(),
                             html.H4("Choose an appropriate chance of success (p):"),
-                            # dcc.Input(id='bins-desired', type="number", value=10),
                             dcc.Slider(
                                 id="p_binom",
                                 min=0,
@@ -411,7 +450,9 @@ def binomialDistLayout():
             ),
             dcc.Markdown(
                 id="binom_block_md",
-                children=readFileasStr("./utils/markdown/tab_2/code_markdown_binom.md"),
+                children=read_file_as_str(
+                    "./utils/markdown/tab_2/code_markdown_binom.md"
+                ),
                 className="code-markdown-view",
                 mathjax=True,
             ),
@@ -425,6 +466,9 @@ def binomialDistLayout():
     return distributionLayout
 
 
+#######################################
+# Binomial Distribution Callbacks
+#######################################
 @my_app.callback(
     Output(component_id="binom-dist", component_property="figure"),
     Input(component_id="n_samples_binom", component_property="value"),
@@ -446,20 +490,3 @@ def render_binom_dist(n_samples, trials, p):
 )
 def func(n_clicks):
     return dcc.send_file("./utils/download_codes/tab_2/binom_gen.py")
-
-
-#############################
-@my_app.callback(
-    Output(component_id="layout_tab3", component_property="children"),
-    Input(component_id="viz_dists", component_property="value"),
-)
-def Tab3Render(ques):
-    if ques == "normdist":
-        return normDistLayout()
-    if ques == "poissondist":
-        return poissonDistLayout()
-    if ques == "binomdist":
-        return binomialDistLayout()
-    if ques == "uniformdist":
-        return uniformDistLayout()
-    return "The impaler!!!!"
