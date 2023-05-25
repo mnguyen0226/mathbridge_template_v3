@@ -15,7 +15,6 @@ import json
 
 # file imports
 from maindash import my_app
-from src.helper_functions.helpers import read_file_as_str
 
 #######################################
 # Initial Settings
@@ -24,7 +23,7 @@ pio.templates
 server = my_app.server
 external_stylesheets = [
     "https://codepen.io/chriddyp/pen/bWLwgP.css",
-    "assets/custom.css",
+    "src/assets/assets.css",
 ]
 
 
@@ -50,9 +49,31 @@ my_app.layout = html.Div(
     className="outer-div",
 )  # NOTE: className is for styling
 
+
 #######################################
 # Dash Callbacks
 #######################################
+@my_app.callback(
+    Output(
+        component_id="layout", component_property="children"
+    ),  # children and value are HTML property (W3 school)
+    Input(component_id="viz_tabs", component_property="value"),
+)
+def rendertheRightTabs(ques):
+    if ques == "rand_exp":
+        pass
+    if ques == "nn":
+        pass
+        #  return tab2.tab2Layout()
+    if ques == "dist":
+        pass
+        #  return tab3.tab3Layout()
+    if ques == "functions":
+        pass
+        #  return tab4.functionsLayout()
+    if ques == "eigen":
+        pass
+        #  return tab5.tab5Layout()
 
 
 if __name__ == "__main__":
