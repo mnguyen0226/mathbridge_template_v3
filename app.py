@@ -16,6 +16,7 @@ import json
 # file imports
 from maindash import my_app
 from components.tab_1 import random_exp
+from components.tab_2 import dist
 
 #######################################
 # Initial Settings
@@ -58,8 +59,7 @@ def rendertheRightTabs(ques):
     if ques == "rand_exp":
         return random_exp.randomExpressionLayout()
     if ques == "dist":
-        pass
-        #  return tab3.tab3Layout()
+        return dist.tab3Layout()
     if ques == "functions":
         pass
         #  return tab4.functionsLayout()
