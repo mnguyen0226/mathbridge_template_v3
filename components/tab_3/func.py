@@ -97,6 +97,7 @@ def functionVizLayout():
             html.Hr(),
             html.Strong("Plot of the Function"),
             dcc.Graph(id="function-plot"),
+            html.Hr(),
         ]
     )
     return tab4Layout
@@ -183,6 +184,7 @@ def functionDerivativeLayout():
             id="btn-download-derivatives",
         ),
         dcc.Download(id="download-derivatives"),
+        html.Hr(),
     ]
 
     return tab5Layout

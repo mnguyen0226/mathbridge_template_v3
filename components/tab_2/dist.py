@@ -166,6 +166,7 @@ def normDistLayout():
                 id="btn-download-norm",
             ),
             dcc.Download(id="download-norm"),
+            html.Hr(),
         ]
     )
 
@@ -289,6 +290,7 @@ def poissonDistLayout():
                 id="btn-download-poisson",
             ),
             dcc.Download(id="download-poisson"),
+            html.Hr(),
         ]
     )
 
@@ -410,6 +412,7 @@ def uniformDistLayout():
                 id="btn-download-uni",
             ),
             dcc.Download(id="download-uni"),
+            html.Hr(),
         ]
     )
 
@@ -524,6 +527,7 @@ def binomialDistLayout():
                 id="btn-download-binom",
             ),
             dcc.Download(id="download-binom"),
+            html.Hr(),
         ]
     )
 

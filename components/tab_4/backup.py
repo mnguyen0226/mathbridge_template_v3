@@ -3,7 +3,6 @@ from dash import dcc
 from dash import html
 from dash import Input
 from dash import Output
-import dash_bootstrap_components as dbc
 
 # other imports
 import numpy as np
@@ -18,163 +17,100 @@ from utils.others.file_operations import read_file_as_str
 # Dash Layout
 #######################################
 def eigen_layout():
-    tabs = html.Div(
-        [
-            dbc.Tabs(
-                id="selected_tab_4",
-                children=[
-                    dbc.Tab(
-                        label="Theory",
-                        tab_id="theory_tab_4",
-                    ),
-                    dbc.Tab(
-                        label="Playground",
-                        tab_id="pg_tab_4",
-                    ),
-                ],
-                active_tab="theory_tab_4",
-            ),
-            html.Br(),
-            html.Div(id="tab_layout_4"),
-        ]
-    )
-    return tabs
-
-
-#######################################
-# Callbacks
-#######################################
-@my_app.callback(
-    Output(component_id="tab_layout_4", component_property="children"),
-    [Input(component_id="selected_tab_4", component_property="active_tab")],
-)
-def render_tab_4(tab_choice):
-    """Renders the selected subtab's layout
-
-    Args:
-        tab_choice (str): selected subtab
-
-    Returns:
-        selected subtab's layout
-    """
-    if tab_choice == "theory_tab_4":
-        return eigen_theory_tab_layout()
-    if tab_choice == "pg_tab_4":
-        return eigen_playground_tab_layout()
-
-
-#######################################
-# Theory Layout
-#######################################
-def eigen_theory_tab_layout():
-    subtab_layout = html.Div(
-        [
-            html.H3("Eigen Vector & Eigen Values"),
-            html.Br(),
-            dcc.Markdown(
-                children=read_file_as_str(
-                    "./utils/markdown/tab_4/code_markdown_eigen.md"
-                ),
-                mathjax=True,
-            ),
-            html.Hr(),
-        ],
-    )
-    return subtab_layout
-
-
-#######################################
-# Playground Layout
-#######################################
-def eigen_playground_tab_layout():
     tab5Layout = html.Div(
         [
-            html.H3("Eigen Vector & Eigen Values Visualization"),
-            html.Br(),
-            html.Div(
-                dbc.Row(
-                    [
-                        dbc.Col(dbc.Label("A Value"), width="auto"),
-                        dbc.Col(
-                            dbc.Input(
-                                id="first_val",
-                                type="number",
-                                value=3,
-                            ),
-                            width="auto",
-                        ),
-                    ],
-                    align="center",
-                ),
+            html.H3("Visualizing Eigen Vector & Eigen Values"),
+            # add markdown
+            dcc.Markdown(
+                id="code-markdown-eigen", className="markdown-view", mathjax=True
             ),
-            html.Br(),
+            # set matrix example
+            # set input value for matrix
             html.Div(
-                dbc.Row(
-                    [
-                        dbc.Col(dbc.Label("B Value"), width="auto"),
-                        dbc.Col(
-                            dbc.Input(
-                                id="second_val",
-                                type="number",
-                                value=0,
-                            ),
-                            width="auto",
-                        ),
-                    ],
-                    align="center",
-                ),
+                [
+                    html.H4("A"),
+                    dcc.Input(
+                        id="first_val",
+                        type="number",
+                        value=3,
+                        className="standard-gen-ip",
+                    ),
+                ],
+                className="grouped-label-class",
             ),
-            html.Br(),
             html.Div(
-                dbc.Row(
-                    [
-                        dbc.Col(dbc.Label("C Value"), width="auto"),
-                        dbc.Col(
-                            dbc.Input(
-                                id="third_val",
-                                type="number",
-                                value=1,
-                            ),
-                            width="auto",
-                        ),
-                    ],
-                    align="center",
-                ),
+                [
+                    html.H4("B"),
+                    dcc.Input(
+                        id="second_val",
+                        type="number",
+                        value=0,
+                        className="standard-gen-ip",
+                    ),
+                ],
+                className="grouped-label-class",
             ),
-            html.Br(),
             html.Div(
-                dbc.Row(
-                    [
-                        dbc.Col(dbc.Label("D Value"), width="auto"),
-                        dbc.Col(
-                            dbc.Input(
-                                id="fourth_val",
-                                type="number",
-                                value=2,
-                            ),
-                            width="auto",
-                        ),
-                    ],
-                    align="center",
-                ),
+                [
+                    html.H4("C"),
+                    dcc.Input(
+                        id="third_val",
+                        type="number",
+                        value=1,
+                        className="standard-gen-ip",
+                    ),
+                ],
+                className="grouped-label-class",
             ),
-            html.Br(),
-            html.Hr(),
-            html.Strong("Calculated Eigen Value 1"),
-            html.Plaintext(children="text", id="eigen-val-output1"),
-            html.Br(),
-            html.Strong("Calculated Eigen Value 2"),
-            html.Plaintext(children="text", id="eigen-val-output2"),
-            html.Hr(),
-            html.Strong("Original Eigen Vectors"),
-            dcc.Graph(id="eigen-origin"),
-            html.Br(),
-            html.Strong("Transformed Eigen Vectors"),
-            dcc.Graph(id="eigen-transform"),
-            html.Br(),
-            html.Strong("Eigen Vectors Transformation Animation"),
+            html.Div(
+                [
+                    html.H4("D"),
+                    dcc.Input(
+                        id="fourth_val",
+                        type="number",
+                        value=2,
+                        className="standard-gen-ip",
+                    ),
+                ],
+                className="grouped-label-class",
+            ),
+            html.Div(
+                [
+                    html.H4("Calculated Eigen Value 1"),
+                    html.Plaintext(children="text", id="eigen-val-output1"),
+                ],
+                className="grouped-label-class",
+            ),
+            html.Div(
+                [
+                    html.H4("Calculated Eigen Value 2"),
+                    html.Plaintext(children="text", id="eigen-val-output2"),
+                ],
+                className="grouped-label-class",
+            ),
+            html.Div(
+                [
+                    html.H4("Eigen Vectors & Transformation"),
+                ],
+                className="grouped-label-class",
+            ),
+            html.Div(
+                [
+                    # set hook for input graph
+                    dcc.Graph(id="eigen-origin"),
+                    # set hook for transformation graph
+                    dcc.Graph(id="eigen-transform"),
+                ],
+                className="grouped-label-class-horizontal",
+            ),
+            html.Div(
+                [
+                    html.H4("Transformation Animation"),
+                ],
+                className="grouped-label-class",
+            ),
+            # # set hook for graph
             dcc.Graph(id="eigen-play"),
-            html.Hr(),
         ]
     )
     return tab5Layout
@@ -184,7 +120,7 @@ selected_points = []
 
 
 #######################################
-# Playground Callbacks
+# Dash Callbacks
 #######################################
 @my_app.callback(
     Output(component_id="eigen-val-output1", component_property="children"),
@@ -192,6 +128,7 @@ selected_points = []
     Output(component_id="eigen-origin", component_property="figure"),
     Output(component_id="eigen-transform", component_property="figure"),
     Output(component_id="eigen-play", component_property="figure"),
+    Output(component_id="code-markdown-eigen", component_property="children"),
     Input(component_id="first_val", component_property="value"),
     Input(component_id="second_val", component_property="value"),
     Input(component_id="third_val", component_property="value"),
@@ -221,9 +158,9 @@ def record_coords(A, B, C, D):
     # Linear transformation
     T = np.array([[A, B], [C, D]], dtype=float)
     eigenvalues, eigenvectors = np.linalg.eig(T)
-    # print(f"Matrix: \n{T}\n ")
-    # print("Eigenvectors: \n%s" % eigenvectors)
-    # print("\nEigenvalues: \n%s" % eigenvalues)
+    print(f"Matrix: \n{T}\n ")
+    print("Eigenvectors: \n%s" % eigenvectors)
+    print("\nEigenvalues: \n%s" % eigenvalues)
 
     xy = np.stack((x, y))
     xy_T = T.T @ xy
@@ -413,4 +350,9 @@ def record_coords(A, B, C, D):
         ],
     )
 
-    return cal_eigen_val1, cal_eigen_val2, fig1, fig2, fig3
+    # add mark down
+    code_eigen_markdown = read_file_as_str(
+        "./utils/markdown/tab_4/code_markdown_eigen.md"
+    )
+
+    return cal_eigen_val1, cal_eigen_val2, fig1, fig2, fig3, code_eigen_markdown

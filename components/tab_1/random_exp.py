@@ -238,6 +238,7 @@ def playground_tab_layout():
                     dcc.Graph(id="w_graph"),
                 ],
             ),
+            html.Hr(),
         ]
     )
     return subtab_layout
@@ -299,6 +300,7 @@ def codeblock_tab_layout():
                 id="btn_download_rand",
             ),
             dcc.Download(id="download_py"),
+            html.Hr(),
         ]
     )
     return subtab_layout
