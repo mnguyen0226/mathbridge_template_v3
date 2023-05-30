@@ -214,6 +214,7 @@ def playground_tab_layout():
                 marks={data: f"{data:.2f}" for data in np.linspace(0.0, 1, 11)},
                 step=0.01,
             ),
+            html.Br(),
             html.Hr(),
             html.Div(
                 [
