@@ -14,6 +14,7 @@ from components.tab_1 import random_exp
 from components.tab_2 import dist
 from components.tab_3 import func
 from components.tab_4 import eigen
+from components.about import about
 
 #######################################
 # Initial Settings
@@ -86,12 +87,7 @@ my_app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
 )
 def render_page_content(pathname):
     if pathname == "/":
-        return [
-            html.H1("About", style={"textAlign": "center"}),
-            html.P(
-                f"Write something about the website + professor with static image + Copy Right"
-            ),
-        ]
+        return about.about_layout()
     elif pathname == "/rand_exp":
         return random_exp.rand_exp_layout()
 
