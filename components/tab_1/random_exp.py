@@ -77,6 +77,7 @@ def theory_tab_layout():
     subtab_layout = html.Div(
         [
             html.H3("Lehman Generator"),
+            html.Br(),
             dcc.Markdown(
                 children=read_file_as_str("utils/markdown/tab_1/lehman.md"),
                 mathjax=True,
@@ -99,6 +100,7 @@ def playground_tab_layout():
     subtab_layout = html.Div(
         [
             html.H3("Lehman Generator Visualization"),
+            html.Br(),
             html.Div(
                 dbc.Row(
                     [
@@ -278,6 +280,7 @@ def codeblock_tab_layout():
     subtab_layout = html.Div(
         [
             html.H3("Source Code"),
+            html.Br(),
             dbc.Label(
                 "In this section, we will see how to generate the histograms with a simple Python Program."
             ),
