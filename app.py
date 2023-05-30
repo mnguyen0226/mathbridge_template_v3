@@ -22,51 +22,93 @@ pio.templates
 server = my_app.server
 
 #######################################
-# Dash Layout
+# Styling
 #######################################
-my_app.layout = html.Div(
+SIDEBAR_STYLE = {
+    "position": "fixed",
+    "top": 0,
+    "left": 0,
+    "bottom": 0,
+    "width": "16rem",
+    "padding": "2rem 1rem",
+    "background-color": "#f8f9fa",  # grey color
+}
+
+CONTENT_STYLE = {
+    "margin-left": "18rem",
+    "margin-right": "2rem",
+    "padding": "2rem 1rem",
+}
+
+
+#######################################
+# Layout
+#######################################
+
+# sidebar layout
+sidebar = html.Div(
     [
-        html.H2("Mathbridge @ Virginia Tech"),
-        dcc.Tabs(
-            id="tab_bar",
-            children=[
-                dcc.Tab(label="Random Expressions", value="rand_exp_tab"),
-                dcc.Tab(label="Distributions", value="dist_tab"),
-                dcc.Tab(label="Functions Plotted", value="func_tab"),
-                dcc.Tab(label="Eigen", value="eigen_tab"),
-            ],
-            value="rand_exp_tab",  # default page
+        html.H2("Virginia Tech MathBridge", className="display-5"),
+        html.Hr(),
+        html.P(
+            "Linear Algebra, Statistics, & Machine Learning Visualization",
+            className="lead",
         ),
-        html.Div(id="layout"),
+        # Nav component
+        dbc.Nav(
+            [
+                dbc.NavLink("About", href="/", active="exact"),
+                dbc.NavLink("Random Expressions", href="/rand_exp", active="exact"),
+                dbc.NavLink("Distributions", href="/dist", active="exact"),
+                dbc.NavLink("Functions Plotted", href="/func", active="exact"),
+                dbc.NavLink("Eigen", href="/eigen", active="exact"),
+            ],
+            vertical=True,
+            pills=True,
+        ),
     ],
-    className="outer-div",
+    style=SIDEBAR_STYLE,
 )
 
+# main page layout
+content = html.Div(id="page-content", children=[], style=CONTENT_STYLE)
+
+# binding sidebar and content
+my_app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
+
 
 #######################################
-# Dash Callbacks
+# Callbacks
 #######################################
 @my_app.callback(
-    Output(component_id="layout", component_property="children"),
-    Input(component_id="tab_bar", component_property="value"),
+    Output(component_id="page-content", component_property="children"),
+    [Input(component_id="url", component_property="pathname")],
 )
-def render_main_page(tab_choice):
-    """Renders the selected tab
-
-    Args:
-        tab_choice (str): dash Tab component's value
-
-    Returns:
-        _type_: selected tab
-    """
-    if tab_choice == "rand_exp_tab":
+def render_page_content(pathname):
+    if pathname == "/":
+        return [
+            html.H1("About", style={"textAlign": "center"}),
+            html.P(f"Write something about the website + professor with static image"),
+        ]
+    elif pathname == "/rand_exp":
         return random_exp.rand_exp_layout()
-    if tab_choice == "dist_tab":
+
+    elif pathname == "/dist":
         return dist.dist_layout()
-    if tab_choice == "func_tab":
+
+    elif pathname == "/func":
         return func.func_layout()
-    if tab_choice == "eigen_tab":
+
+    elif pathname == "/eigen":
         return eigen.eigen_layout()
+
+    return dbc.Container(
+        [
+            html.H1("404: Not found", className="text-danger"),
+            html.Hr(),
+            html.P(f"The pathname {pathname} was not recognised..."),
+        ]
+    )
 
 
 if __name__ == "__main__":

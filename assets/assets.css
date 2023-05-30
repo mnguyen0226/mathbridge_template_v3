@@ -1,10 +1,10 @@
-*{
-    /*font-family: CharterBT,"PT Serif","Times New Roman",Times,serif;*/
+/* *{
     font-family: "Helvetica Neue";
-}
-body{
+} */
+
+/* body{
     background:  lightgray;
-}
+} */
 
 .outer-div{
     max-width: 80vw;
@@ -67,7 +67,7 @@ body{
 
 .g-gtitle{
     margin-left: 100px;
-    font-family: "Helvetica Neue";
+    /* font-family: "Helvetica Neue"; */
 }
 
 .code-markdown-view{
