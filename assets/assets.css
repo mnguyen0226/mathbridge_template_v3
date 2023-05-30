@@ -51,13 +51,13 @@ body{
 
 
 .tab {
-        color: black;
-        background-color: white !important;
-        /*font-weight: bold;*/
+    color: black;
+    background-color: white !important;
+    /*font-weight: bold;*/
 }
 
 .tab--selected{
-     background-color: darkred !important;
+    background-color: darkred !important;
     color: white; !important;
 }
 
@@ -113,3 +113,5 @@ body{
 .btn-download:hover{
     cursor: pointer;
 }
+
+/* vertical tab */

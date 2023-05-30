@@ -3,6 +3,7 @@ from dash import html
 from dash import Input
 from dash import Output
 from dash import dcc
+import dash_bootstrap_components as dbc
 
 # other imports
 import plotly.io as pio
