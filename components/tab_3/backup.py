@@ -3,7 +3,6 @@ from dash import dcc
 from dash import html
 from dash import Input
 from dash import Output
-import dash_bootstrap_components as dbc
 
 # other imports
 import numpy as np
@@ -23,27 +22,20 @@ from utils.stats.non_linear import log
 # Dash Layout
 #######################################
 def func_layout():
-    tabs = html.Div(
+    tab4Layout = html.Div(
         [
-            dbc.Tabs(
+            dcc.Tabs(
                 id="viz_funcs",
                 children=[
-                    dbc.Tab(
-                        label="Nonlinear",
-                        tab_id="visualization",
-                    ),
-                    dbc.Tab(
-                        label="Derivatives",
-                        tab_id="derivatives",
-                    ),
+                    dcc.Tab(label="Visualization", value="visualization"),
+                    dcc.Tab(label="Derivatives", value="derivatives"),
                 ],
-                active_tab="visualization",
+                value="visualization",
             ),
-            html.Br(),
             html.Div(id="layout_tab4"),
         ]
     )
-    return tabs
+    return tab4Layout
 
 
 #######################################
@@ -51,7 +43,7 @@ def func_layout():
 #######################################
 @my_app.callback(
     Output(component_id="layout_tab4", component_property="children"),
-    Input(component_id="viz_funcs", component_property="active_tab"),
+    Input(component_id="viz_funcs", component_property="value"),
 )
 def Tab4Render(ques):
     if ques == "visualization":
@@ -68,35 +60,47 @@ def Tab4Render(ques):
 def functionVizLayout():
     tab4Layout = html.Div(
         [
-            html.H3("Nonlinear Functions Visualization"),
-            html.Br(),
-            dbc.Label("X range"),
-            dcc.RangeSlider(
-                min=-20,
-                max=20,
-                step=1,
-                value=[-10, 10],
-                marks={data: str(data) for data in range(-20, 20, 2)},
-                id="range_x",
-            ),
-            html.Br(),
-            dbc.Label("Select function"),
-            dcc.Dropdown(
-                id="function-selection",
-                options=[
-                    {"label": "x^2", "value": 1},
-                    {"label": "x^3", "value": 2},
-                    {"label": "x^4", "value": 3},
-                    {"label": "e^x", "value": 4},
-                    {"label": "log(x)", "value": 5},
+            html.H4("Visualizing Functions"),
+            html.Div(
+                [
+                    html.Div(
+                        [
+                            html.H4("X-Range"),
+                            dcc.RangeSlider(
+                                min=-20,
+                                max=20,
+                                step=1,
+                                value=[-10, 10],
+                                marks={data: str(data) for data in range(-20, 20, 2)},
+                                id="range_x",
+                            ),
+                            html.H4("Select function"),
+                            dcc.Dropdown(
+                                id="function-selection",
+                                options=[
+                                    {"label": "x^2", "value": 1},
+                                    {"label": "x^3", "value": 2},
+                                    {"label": "x^4", "value": 3},
+                                    {"label": "e^x", "value": 4},
+                                    {"label": "log(x)", "value": 5},
+                                ],
+                                value=1,
+                                clearable=False,
+                            ),
+                        ],
+                        className="grouped-sliders",
+                    ),
+                    html.Div(
+                        [
+                            html.Br(),
+                            html.Strong("Plot of the Function"),
+                            dcc.Graph(id="function-plot"),
+                        ],
+                        className="grouped-graphs",
+                    ),
                 ],
-                value=1,
-                clearable=False,
+                className="graphs-and-sliders",
             ),
-            html.Br(),
-            html.Hr(),
-            html.Strong("Plot of the Function"),
-            dcc.Graph(id="function-plot"),
         ]
     )
     return tab4Layout
@@ -146,9 +150,7 @@ def plotFunctions(range_x, function_selected):
 #######################################
 def functionDerivativeLayout():
     tab5Layout = [
-        html.H3("Function Derivatives Visualization"),
-        html.Br(),
-        dbc.Label("Select function"),
+        html.H4("Visualizing Derivatives"),
         dcc.Dropdown(
             options=[
                 {"label": "f(x)=x^2", "value": "square"},
@@ -159,28 +161,32 @@ def functionDerivativeLayout():
             value="square",
             id="fn-select-grad",
         ),
-        html.Br(),
-        html.Hr(),
-        html.Strong("Original Function"),
-        dcc.Graph(id="functions-graph"),
-        html.Br(),
-        html.Strong("Function Derivative Graphed"),
-        dcc.Graph(id="derivative-graph"),
-        html.Hr(),
-        html.H3("Source Code"),
-        html.Br(),
+        html.Div(
+            [
+                html.Div(
+                    [html.Strong("Original Function"), dcc.Graph(id="functions-graph")],
+                    className="grouped-graphs",
+                ),
+                html.Div(
+                    [
+                        html.Strong("Function Derivative Graphed"),
+                        dcc.Graph(id="derivative-graph"),
+                    ],
+                    className="grouped-graphs",
+                ),
+            ],
+            className="row-pane",
+        ),
         dcc.Markdown(
             id="binom_block_md",
             children=read_file_as_str(
                 "./utils/markdown/tab_3/code_markdown_derivatives.md"
             ),
+            className="code-markdown-view",
             mathjax=True,
         ),
-        dbc.Button(
-            "Download Code",
-            color="success",
-            className="me-1",
-            id="btn-download-derivatives",
+        html.Button(
+            "Download Code", id="btn-download-derivatives", className="btn-download"
         ),
         dcc.Download(id="download-derivatives"),
     ]
