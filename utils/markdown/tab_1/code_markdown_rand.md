@@ -1,9 +1,4 @@
-In this section, we will see how to generate the histograms with a simple Python Program.
-
-We recommend you to download and try running the code!
-
-
-```
+```python
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -70,10 +65,7 @@ class RandTool:
         w=self.getUniformW(v,scaledown)
         return u,v,w
 
-
 rand=RandTool()
-
-
 
 def main():
     ### To get the uniform distribution U_n,V_n,W_n

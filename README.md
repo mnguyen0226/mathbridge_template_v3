@@ -9,3 +9,9 @@ Data visualization webapp for Virginia Tech CS department machine learning cours
 - Add hover tab instead of click tab
 - Remove print statement
 - fix id into "tab" 
+
+## Random Expression:
+Explaination: Accordion
+Layout: Tab
+
+# Input Visualiization

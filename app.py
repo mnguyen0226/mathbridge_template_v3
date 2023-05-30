@@ -48,7 +48,7 @@ CONTENT_STYLE = {
 # sidebar layout
 sidebar = html.Div(
     [
-        html.H2("Virginia Tech MathBridge", className="display-5"),
+        html.H2("Virginia Tech MathBridge", className="display-6"),
         html.Hr(),
         html.P(
             "Linear Algebra, Statistics, & Machine Learning Visualization",
@@ -88,7 +88,7 @@ def render_page_content(pathname):
     if pathname == "/":
         return [
             html.H1("About", style={"textAlign": "center"}),
-            html.P(f"Write something about the website + professor with static image"),
+            html.P(f"Write something about the website + professor with static image + Copy Right"),
         ]
     elif pathname == "/rand_exp":
         return random_exp.rand_exp_layout()
