@@ -1,7 +1,4 @@
-Uniform distribution gives an uniformly distributed set of values within a lower bound and upper bound for a specified number of samples.
-
-The code below generates a Uniform distribution in Python, try running it to get a feel for this distribution.
-```
+```python
 ## This exercise requires you to have Numpy installed
 ## Checkout - https://numpy.org/doc/stable/index.html
 

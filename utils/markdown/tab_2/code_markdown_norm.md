@@ -1,7 +1,4 @@
-Normal distributions can generate a bell curve like distribution given a mean and standard deviation.
-
-The code below generates a normal distribution in Python, try running it to get a feel for this distribution.
-```
+```python
 import numpy as np
 from matplotlib import pyplot as plt
 

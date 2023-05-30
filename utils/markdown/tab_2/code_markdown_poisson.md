@@ -1,6 +1,4 @@
-Poisson Distribution estimates the number of times an event may occur at every instance of time, given a rate of occurence $\lambda$
-The code below generates a Poisson distribution in Python, try running it to get a feel for this distribution.
-```
+```python
 ## This exercise requires you to have Numpy installed
 ## Checkout - https://numpy.org/doc/stable/index.html
 

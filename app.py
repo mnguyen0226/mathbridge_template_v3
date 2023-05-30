@@ -88,7 +88,9 @@ def render_page_content(pathname):
     if pathname == "/":
         return [
             html.H1("About", style={"textAlign": "center"}),
-            html.P(f"Write something about the website + professor with static image + Copy Right"),
+            html.P(
+                f"Write something about the website + professor with static image + Copy Right"
+            ),
         ]
     elif pathname == "/rand_exp":
         return random_exp.rand_exp_layout()

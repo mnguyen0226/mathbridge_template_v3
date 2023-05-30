@@ -1,7 +1,4 @@
-Binomial Distribution generates a distribution of successes of events, given that an event has n outcomes, and p probability of success.
-
-The code below generates a Binomial distribution in Python, try running it to get a feel for this distribution.
-```
+```python
 ## This exercise requires you to have Numpy installed
 ## Checkout - https://numpy.org/doc/stable/index.html
 
